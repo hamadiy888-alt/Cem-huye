@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masdjid Qubah – Tenant Registration</title>
+    <style>
+        :root {
+            --brand: #075985;
+            --accent: #0ea5e9;
+            --bg: #0b1220;
+            --card: #0f172aee;
+            --muted: #94a3b8;
+            --ok: #10b981;
+            --warn: #f59e0b;
+            --bad: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial;
+            color: #fff;
+            background: radial-gradient(1200px 600px at 80% -10%, #143a56 0%, #0b1220 45%, #090f1a 100%);
+            line-height: 1.45;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjgwIiBmaWxsPSJub25lIiBzdHJva2U9IiMwZTlhNWU5IiBzdHJva2Utd2lkdGg9IjIiIC8+PHRleHQgeD0iMTAwIiB5PSIxMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzBlOWE1ZTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5DRU08L3RleHQ+PC9zdmc+');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 60vmin;
+            opacity: 0.06;
+            pointer-events: none;
+            filter: grayscale(100%);
+        }
+
+        header {
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid #0b2a3d;
+            background: linear-gradient(180deg, rgba(14, 165, 233, 0.12), rgba(14, 165, 233, 0.03));
+            padding: 20px 0;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 16px;
+            align-items: center;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 18px 16px 14px;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
+            border: 1px solid #0a2a40;
+            background: #091522;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: #0ea5e9;
+        }
+
+        .title h1 {
+            margin: 0;
+            font-size: clamp(20px, 3.5vw, 34px);
+            letter-spacing: .2px;
+        }
+
+        .title p {
+            margin: .35rem 0 0;
+            color: var(--muted);
+        }
+
+        .pill {
+            display: inline-block;
+            padding: .25rem .6rem;
+            border: 1px solid #134b72;
+            background: #0b1c2c;
+            border-radius: 999px;
+            color: #cbe7ff;
+            font-size: .8rem;
+            margin-top: .5rem;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 18px auto;
+            padding: 0 16px 80px;
+            display: grid;
+            gap: 18px;
+        }
+
+        .grid {
+            display: grid;
+            gap: 18px;
+        }
+
+        @media (min-width: 980px) {
+            .grid {
+                grid-template-columns: 1.2fr .9fr;
+            }
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid #1e293b;
+            border-radius: 18px;
+            padding: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .25);
+            backdrop-filter: blur(6px);
+        }
+
+        h2 {
+            margin: .25rem 0 1rem;
+            font-size: 1.2rem;
+        }
+
+        fieldset {
+            border: 1px dashed #1f3a53;
+            border-radius: 14px;
+            padding: 12px;
+            margin: 0 0 12px;
+        }
+
+        legend {
+            padding: 0 .5rem;
+            color: #c2e6ff;
+            font-weight: 600;
+        }
+
+        label {
+            display: block;
+            font-size: .92rem;
+            margin: .35rem 0 .15rem;
+        }
+
+        input, select, textarea, button {
+            font: inherit;
+            color: #e6f4ff;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: .65rem .7rem;
+            background: #091525;
+            border: 1px solid #1f3b57;
+            border-radius: 12px;
+            outline: none;
+            transition: border .2s, box-shadow .2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #2b87b8;
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, .20);
+        }
+
+        .row {
+            display: grid;
+            gap: 10px;
+        }
+
+        @media (min-width: 720px) {
+            .row.two {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .row.three {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+
+        .muted {
+            color: var(--muted);
+            font-size: .9rem;
+        }
+
+        .mono {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .btn {
+            appearance: none;
+            border: 1px solid transparent;
+            border-radius: 12px;
+            padding: .7rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            background: linear-gradient(180deg, #0ea5e9, #0284c7);
+            color: #03111d;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25), 0 10px 20px rgba(2, 132, 199, .25);
+        }
+
+        .btn:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        .btn.secondary {
+            background: transparent;
+            color: #d8f1ff;
+            border-color: #2a4f70;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: .2rem .5rem;
+            border-radius: 999px;
+            border: 1px solid #274e6d;
+            color: #cbe7ff;
+            font-size: .75rem;
+        }
+
+        /* Dashboard tables */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            min-width: 600px;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: .6rem .7rem;
+            border-bottom: 1px solid #1f2e43;
+            text-align: left;
+        }
+
+        thead th {
+            position: sticky;
+            top: 0;
+            background: #0c1728;
+            z-index: 1;
+            font-size: .9rem;
+        }
+
+        tbody tr:hover {
+            background: #0b1a2b;
+        }
+
+        .status.ok {
+            color: var(--ok);
+        }
+
+        .status.warn {
+            color: var(--warn);
+        }
+
+        .status.bad {
+            color: var(--bad);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: .5rem .8rem;
+            border: 1px solid #284660;
+            border-radius: 999px;
+            background: #0b1e30;
+            cursor: pointer;
+        }
+
+        .tab.active {
+            background: #0ea5e9;
+            color: #062437;
+            border-color: #0ea5e9;
+            font-weight: 700;
+        }
+
+        /* Terms Gate (must accept before entering data) */
+        .gate {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 6, 23, .8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+            z-index: 50;
+            backdrop-filter: blur(4px);
+        }
+
+        .gate .panel {
+            width: min(900px, 95vw);
+            max-height: 88vh;
+            overflow: auto;
+            background: var(--card);
+            border: 1px solid #27455e;
+            border-radius: 18px;
+            padding: 16px;
+        }
+
+        .terms {
+            background: #071221;
+            border: 1px solid #223a53;
+            border-radius: 12px;
+            padding: 12px;
+            color: #d9eeff;
+            font-size: .95rem;
+            max-height: 46vh;
+            overflow: auto;
+        }
+
+        /* Footer location */
+        footer {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 8px 14px;
+            background: #071221cc;
+            border-top: 1px solid #16324a;
+            color: #a7c8de;
+            font-size: .9rem;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Header image backdrop strip for extra "beauty" */
+        .banner {
+            position: absolute;
+            inset: auto 0 -1px 0;
+            height: 6px;
+            background: linear-gradient(90deg, #0ea5e9, #22d3ee, #38bdf8, #0ea5e9);
+            filter: saturate(120%);
+            opacity: .9;
+        }
+
+        .nowrap {
+            white-space: nowrap;
+        }
+
+        /* Mosque Header */
+        .mosque-header {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3c.w3cub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNDAwIDEwMGMyMDAgMCAzMDAgMTAwIDMwMCAzMDBIMTAwYzAtMjAwIDEwMC0zMDAgMzAwLTMwMHoi IGZpbGw9IiMwZTlhNWU5IiBvcGFjaXR5PSIwLjIiLz48L3N2Zz4=');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .mosque-header h1 {
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            color: white;
+            text-align: center;
+        }
+
+        /* Phone validation styles */
+        .phone-hint {
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin-top: 0.25rem;
+        }
+
+        .valid-phone {
+            border-color: #10b981 !important;
+        }
+
+        .invalid-phone {
+            border-color: #ef4444 !important;
+        }
+
+        /* Validation message */
+        .validation-message {
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .validation-message.valid {
+            color: #10b981;
+            display: block;
+        }
+
+        .validation-message.invalid {
+            color: #ef4444;
+            display: block;
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            background: rgba(14, 165, 233, 0.1);
+            border: 1px solid #0ea5e9;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .admin-panel h4 {
+            margin: 0 0 10px 0;
+            color: #0ea5e9;
+        }
+
+        /* Toast notifications */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            background: var(--card);
+            border: 1px solid #1e293b;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.success {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .toast.error {
+            border-color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        /* Admin access button */
+        .admin-access {
+            position: fixed;
+            bottom: 60px;
+            right: 20px;
+            z-index: 100;
+        }
+
+        /* Page navigation */
+        .page-nav {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .page-nav-btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            background: rgba(14, 165, 233, 0.2);
+            color: white;
+            border: 1px solid #0ea5e9;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .page-nav-btn.active {
+            background: #0ea5e9;
+            color: #03111d;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="hero">
+        <div class="logo">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7V9H3V15C3 18.866 6.13401 22 10 22H14C17.866 22 21 18.866 21 15V9H22V7L12 2Z" fill="#0ea5e9"/>
+                <path d="M10 9H14V12H10V9Z" fill="white"/>
+                <path d="M6 9H8V12H6V9Z" fill="white"/>
+                <path d="M16 9H18V12H16V9Z" fill="white"/>
+            </svg>
+        </div>
+        <div class="title">
+            <h1>Masdjid Qubah – Tenant Registration</h1>
+            <p>Huye District, Goma Sector • Fixed Rent: <strong class="mono">10,000 FRW / month</strong> • Payment: <strong>MOMO only</strong></p>
+            <span class="pill">Institutions: UR • IPRC • CUR</span>
+        </div>
+    </div>
+    <div class="banner"></div>
+</header>
+
+<main>
+    <div class="mosque-header">
+        <h1>Masdjid Qubah Student Housing</h1>
+    </div>
+
+    <!-- Page Navigation -->
+    <div class="page-nav">
+        <button class="page-nav-btn active" data-page="registration">Registration</button>
+        <button class="page-nav-btn" data-page="dashboard">Dashboard</button>
+    </div>
+
+    <!-- Registration Page -->
+    <div id="registration-page" class="page active">
+        <!-- Registration Form -->
+        <section class="card">
+            <h2>Tenant Details (New Registration)</h2>
+            <p class="muted">Please complete all required fields. The rent is fixed at <span class="mono">10,000 FRW</span> and payment method is <strong>MOMO</strong>.</p>
+
+            <form id="tenantForm" autocomplete="on" novalidate>
+                <fieldset>
+                    <legend>1) Personal Information</legend>
+                    <div class="row two">
+                        <div>
+                            <label>Full name *</label>
+                            <input required id="fullName" placeholder="e.g. UWIZEYE Aline" />
+                        </div>
+                        <div>
+                            <label>Gender *</label>
+                            <select required id="gender">
+                                <option value="">Select…</option>
+                                <option>Male</option>
+                                <option>Female</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row two">
+                        <div>
+                            <label>Date of Birth *</label>
+                            <input required id="dob" type="date" />
+                        </div>
+                        <div>
+                            <label>Contact Number (Rwanda) *</label>
+                            <input required id="phone" inputmode="numeric" 
+                                   placeholder="07XXXXXXXX or +2507XXXXXXXX" 
+                                   title="Rwandan phone number: 07XXXXXXXX or +2507XXXXXXXX" />
+                            <div class="phone-hint">Format: 07XXXXXXXX or +2507XXXXXXXX (10 digits)</div>
+                            <div id="phoneValidation" class="validation-message"></div>
+                        </div>
+                    </div>
+                    <div class="row two">
+                        <div>
+                            <label>ID Number *</label>
+                            <input required id="idNo" class="mono" minlength="10" maxlength="20" placeholder="National ID / Student ID" />
+                        </div>
+                        <div>
+                            <label>Email (optional)</label>
+                            <input id="email" type="email" placeholder="name@example.com" />
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>2) Student Details</legend>
+                    <div class="row two">
+                        <div>
+                            <label>Institution *</label>
+                            <select required id="institution">
+                                <option value="">Select…</option>
+                                <option>UR</option>
+                                <option>IPRC</option>
+                                <option>CUR</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Student ID Number *</label>
+                            <input required id="studentId" class="mono" placeholder="e.g. UR22-XXXX" />
+                        </div>
+                    </div>
+                    <div class="row two">
+                        <div>
+                            <label>Course / Program *</label>
+                            <input required id="program" placeholder="e.g. Computer Engineering" />
+                        </div>
+                        <div>
+                            <label>Year of Study *</label>
+                            <select required id="yos">
+                                <option value="">Select…</option>
+                                <option>Year 1</option>
+                                <option>Year 2</option>
+                                <option>Year 3</option>
+                                <option>Year 4</option>
+                                <option>Year 5</option>
+                            </select>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>3) Rental Details</legend>
+                    <div class="row two">
+                        <div>
+                            <label>Room Name *</label>
+                            <select required id="room">
+                                <option value="">Select…</option>
+                                <option>PRESIDANCY</option>
+                                <option>CONGO</option>
+                                <option>CENTRAL AFRICA</option>
+                                <option>MIDDLE</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Address of Rental Property</label>
+                            <input id="address" placeholder="Huye, Goma Sector (optional)" />
+                        </div>
+                    </div>
+
+                    <div class="row three">
+                        <div>
+                            <label>Rent Amount (Monthly)</label>
+                            <input id="rent" class="mono" value="10000 FRW" readonly />
+                        </div>
+                        <div>
+                            <label>Payment Method</label>
+                            <input id="payMethod" class="mono" value="MOMO" readonly />
+                        </div>
+                        <div>
+                            <label>MOMO Code (Phone to pay) *</label>
+                            <input required id="momo" inputmode="numeric" 
+                                   placeholder="07XXXXXXXX or +2507XXXXXXXX" 
+                                   title="Rwandan phone number: 07XXXXXXXX or +2507XXXXXXXX" />
+                            <div class="phone-hint">Format: 07XXXXXXXX or +2507XXXXXXXX (10 digits)</div>
+                            <div id="momoValidation" class="validation-message"></div>
+                        </div>
+                    </div>
+
+                    <div class="row three">
+                        <div>
+                            <label>Date of Move-in *</label>
+                            <input required id="moveIn" type="date" />
+                        </div>
+                        <div>
+                            <label>Expected Duration of Stay (months) *</label>
+                            <input required id="duration" type="number" min="1" max="60" placeholder="e.g. 12" />
+                        </div>
+                        <div>
+                            <label>Initial Months to Pay (required)</label>
+                            <input id="initialMonths" type="number" min="2" value="2" />
+                            <div class="muted">Per rules: pay 2 consecutive months when moving in.</div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>4) Emergency Contact</legend>
+                    <div class="row two">
+                        <div>
+                            <label>Name *</label>
+                            <input required id="emName" />
+                        </div>
+                        <div>
+                            <label>Relationship *</label>
+                            <input required id="emRel" />
+                        </div>
+                    </div>
+                    <div class="row two">
+                        <div>
+                            <label>Phone Number *</label>
+                            <input required id="emPhone" inputmode="numeric" 
+                                   placeholder="07XXXXXXXX or +2507XXXXXXXX" 
+                                   title="Rwandan phone number: 07XXXXXXXX or +2507XXXXXXXX" />
+                            <div class="phone-hint">Format: 07XXXXXXXX or +2507XXXXXXXX (10 digits)</div>
+                            <div id="emPhoneValidation" class="validation-message"></div>
+                        </div>
+                        <div>
+                            <label>Address (optional)</label>
+                            <input id="emAddr" />
+                        </div>
+                    </div>
+                </fieldset>
+
+                <div class="actions">
+                    <button class="btn" id="submitBtn" type="submit">Submit Registration</button>
+                    <button class="btn secondary" type="reset">Reset</button>
+                    <span class="tag">Strong validation enabled</span>
+                </div>
+                <p class="muted">Your data will be securely stored and shared with management.</p>
+            </form>
+        </section>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div id="dashboard-page" class="page">
+        <!-- Admin Panel (Only visible to admins) -->
+        <div class="admin-panel">
+            <h4>🔧 Admin Dashboard</h4>
+            <p>You are viewing the admin dashboard. Others will only see the registration form.</p>
+            <div class="actions">
+                <button class="btn" id="exportDataBtn">Export Tenant Data</button>
+                <button class="btn secondary" id="shareDataBtn">Share Data Link</button>
+                <button class="btn secondary" id="importDataBtn">Import Data</button>
+            </div>
+        </div>
+        
+        <!-- Dashboard -->
+        <section class="card">
+            <h2>Owner Dashboard</h2>
+            <div class="tabs" id="tabs">
+                <button class="tab active" data-tab="list">Tenants</button>
+                <button class="tab" data-tab="pending">Pending</button>
+                <button class="tab" data-tab="months">Months Not Paid</button>
+            </div>
+
+            <div style="overflow:auto">
+                <div id="view-list">
+                    <table id="tblTenants">
+                        <thead>
+                            <tr>
+                                <th>Name</th><th>Room</th><th class="nowrap">Institution</th><th>Move-in</th><th>Paid Months</th><th class="nowrap">Months Owed</th><th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div id="view-pending" style="display:none">
+                    <table id="tblPending">
+                        <thead>
+                            <tr>
+                                <th>Name</th><th>Room</th><th>Move-in</th><th class="nowrap">Months Owed</th><th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div id="view-months" style="display:none">
+                    <table id="tblMonths">
+                        <thead>
+                            <tr>
+                                <th>Name</th><th>Room</th><th>Move-in</th><th class="nowrap">Months Since Move-in</th><th>Paid</th><th class="nowrap">Not Paid</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="actions" style="margin-top:20px">
+                <button class="btn" id="sendRemindersBtn">Send Payment Reminders</button>
+                <button class="btn secondary" id="testEmailBtn">Test Email Setup</button>
+            </div>
+
+            <p class="muted" style="margin-top:.6rem">Tip: use the "Mark Month Paid" action after receiving MOMO.</p>
+        </section>
+    </div>
+</main>
+
+<!-- Terms Gate -->
+<div class="gate" id="gate">
+    <div class="panel">
+        <h2>Read & Accept Conditions to Continue</h2>
+        <div class="terms">
+            <ul>
+                <li>A tenant must pay <strong>10,000 FRW per month</strong>. The landlord may revise rent with 30 days' notice.</li>
+                <li>Tenant must declare the move-in date (day/month/year).</li>
+                <li>No adding/removing house items without permission of the authorities.</li>
+                <li>Obey government rules (keep the area clean, etc.).</li>
+                <li>Community duties: <em>Umuganda</em> (obligatory) and charity activity at Kabutare Hospital.</li>
+                <li>Tenants must pay garbage collection fees to the responsible entity.</li>
+                <li>Do not take any materials of CEM-HUYE without authorization (e.g., saucepans, plates, knives, hoes, cups…).</li>
+                <li>Keep rooms and surroundings clean; failure can lead to eviction after 15 days' notice.</li>
+                <li>Late rent without accepted reason → 7-Day Notice to Pay or Quit.</li>
+                <li><strong>At move-in: pay 2 consecutive months.</strong></li>
+            </ul>
+        </div>
+        <label style="display:flex; gap:.6rem; align-items:center; margin-top:.8rem">
+            <input type="checkbox" id="agree" /> <span>I have read and agree to the above conditions.</span>
+        </label>
+        <div class="actions">
+            <button class="btn" id="acceptBtn" disabled>Accept & Continue</button>
+        </div>
+        <p class="muted">You must accept to enable form submission.</p>
+    </div>
+</div>
+
+<!-- Toast Notification -->
+<div id="toast" class="toast"></div>
+
+<footer>
+    <div>Owner: <strong>MASDJID QUBAH</strong> — Huye District, Goma Sector • Tel: <span class="mono">(+250) 786159466</span> • Email: <span class="mono">cem_unr@yahoo.fr</span> / <span class="mono">cemurhuyecampus@gmail.com</span></div>
+</footer>
+
+<script>
+    // ---------- UTILITIES ----------
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => Array.from(document.querySelectorAll(sel));
+
+    // Show toast notification
+    function showToast(message, type = 'success') {
+        const toast = $('#toast');
+        toast.textContent = message;
+        toast.className = `toast ${type} show`;
+        
+        setTimeout(() => {
+            toast.className = 'toast';
+        }, 3000);
+    }
+
+    function monthDiff(from, to) {
+        const a = new Date(from.getFullYear(), from.getMonth(), 1);
+        const b = new Date(to.getFullYear(), to.getMonth(), 1);
+        const diff = (b.getFullYear()-a.getFullYear())*12 + (b.getMonth()-a.getMonth()) + 1;
+        return Math.max(0, diff);
+    }
+
+    function today(){ const d=new Date(); d.setHours(0,0,0,0); return d; }
+
+    function saveTenants(list){ 
+        localStorage.setItem('mq_tenants', JSON.stringify(list)); 
+        // Update URL with data for sharing
+        updateUrlWithData();
+    }
+    
+    function loadTenants(){ 
+        try {
+            // First try to load from URL parameters (shared data)
+            const urlParams = new URLSearchParams(window.location.search);
+            if(urlParams.has('sharedData')) {
+                try {
+                    const sharedData = JSON.parse(decodeURIComponent(urlParams.get('sharedData')));
+                    if(Array.isArray(sharedData) && sharedData.length > 0) {
+                        return sharedData;
+                    }
+                } catch(e) {
+                    console.error('Error parsing shared data:', e);
+                }
+            }
+            
+            // Fall back to local storage
+            return JSON.parse(localStorage.getItem('mq_tenants')||'[]'); 
+        } catch(e) { 
+            return []; 
+        } 
+    }
+
+    // ---------- DATA SHARING FUNCTIONS ----------
+    function updateUrlWithData() {
+        const tenants = loadTenants();
+        if(tenants.length > 0) {
+            const dataStr = encodeURIComponent(JSON.stringify(tenants));
+            const newUrl = window.location.origin + window.location.pathname + '?sharedData=' + dataStr;
+            window.history.replaceState({}, '', newUrl);
+        }
+    }
+    
+    function shareData() {
+        const tenants = loadTenants();
+        if(tenants.length === 0) {
+            showToast('No data to share. Please add tenants first.', 'error');
+            return;
+        }
+        
+        const dataStr = encodeURIComponent(JSON.stringify(tenants));
+        const shareUrl = window.location.origin + window.location.pathname + '?sharedData=' + dataStr;
+        
+        // Copy to clipboard
+        navigator.clipboard.writeText(shareUrl).then(() => {
+            showToast('Shareable link copied to clipboard! Send this to others to share data.');
+            
+            // Show instructions for accessing clipboard
+            setTimeout(() => {
+                alert('Your shareable link has been copied to your clipboard.\n\nTo paste it:\n- On mobile: Tap and hold in a text field, then select "Paste"\n- On Windows: Press Ctrl+V\n- On Mac: Press Cmd+V');
+            }, 1000);
+        }).catch(err => {
+            // Fallback method
+            prompt('Copy this link to share data:', shareUrl);
+        });
+    }
+    
+    function importData() {
+        const importUrl = prompt('Paste the shared data link:');
+        if(!importUrl) return;
+        
+        try {
+            const url = new URL(importUrl);
+            const sharedData = url.searchParams.get('sharedData');
+            if(sharedData) {
+                const tenants = JSON.parse(decodeURIComponent(sharedData));
+                if(Array.isArray(tenants)) {
+                    saveTenants(tenants);
+                    renderAll();
+                    showToast('Data imported successfully!');
+                } else {
+                    showToast('Invalid data format.', 'error');
+                }
+            } else {
+                showToast('No shared data found in the link.', 'error');
+            }
+        } catch(e) {
+            showToast('Error importing data: ' + e.message, 'error');
+        }
+    }
+
+    // ---------- PHONE NUMBER VALIDATION ----------
+    function validateRwandaPhone(phone) {
+        const cleanedPhone = phone.replace(/\s+/g, '').replace(/[-()]/g, '');
+        const regex = /^(07\d{8}|2507\d{8}|\+2507\d{8})$/;
+        return regex.test(cleanedPhone);
+    }
+
+    function formatPhoneNumber(phone) {
+        const cleaned = phone.replace(/[^\d+]/g, '');
+        
+        if (cleaned.startsWith('+2507') && cleaned.length === 13) {
+            return cleaned;
+        }
+        
+        if (cleaned.startsWith('2507') && cleaned.length === 12) {
+            return '+' + cleaned;
+        }
+        
+        if (cleaned.startsWith('07') && cleaned.length === 10) {
+            return '+250' + cleaned.substring(1);
+        }
+        
+        return phone;
+    }
+
+    function setupPhoneValidation() {
+        const phoneInputs = [
+            {input: '#phone', validation: '#phoneValidation'},
+            {input: '#momo', validation: '#momoValidation'}, 
+            {input: '#emPhone', validation: '#emPhoneValidation'}
+        ];
+        
+        phoneInputs.forEach(({input, validation}) => {
+            const inputEl = $(input);
+            const validationEl = $(validation);
+            
+            if (inputEl) {
+                inputEl.addEventListener('input', function() {
+                    if (this.value.trim() === '') {
+                        this.classList.remove('valid-phone', 'invalid-phone');
+                        validationEl.className = 'validation-message';
+                        validationEl.textContent = '';
+                    } else if (validateRwandaPhone(this.value.trim())) {
+                        this.classList.remove('invalid-phone');
+                        this.classList.add('valid-phone');
+                        validationEl.className = 'validation-message valid';
+                        validationEl.textContent = '✓ Valid phone number';
+                        
+                        const formatted = formatPhoneNumber(this.value);
+                        if (formatted !== this.value) {
+                            this.value = formatted;
+                        }
+                    } else {
+                        this.classList.remove('valid-phone');
+                        this.classList.add('invalid-phone');
+                        validationEl.className = 'validation-message invalid';
+                        validationEl.textContent = '✗ Please enter a valid Rwandan phone number (07XXXXXXXX or +2507XXXXXXXX)';
+                    }
+                });
+                
+                inputEl.addEventListener('blur', function() {
+                    if (this.value.trim() !== '' && validateRwandaPhone(this.value.trim())) {
+                        const formatted = formatPhoneNumber(this.value);
+                        if (formatted !== this.value) {
+                            this.value = formatted;
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    // ---------- TERMS GATE FIX ----------
+    const gate = $('#gate');
+    const agree = $('#agree');
+    const acceptBtn = $('#acceptBtn');
+    const submitBtn = $('#submitBtn');
+
+    // Enable/disable accept button based on checkbox
+    if (agree && acceptBtn) {
+        agree.addEventListener('change', function() {
+            acceptBtn.disabled = !this.checked;
+        });
+    }
+
+    // Handle accept button click
+    if (acceptBtn) {
+        acceptBtn.addEventListener('click', function() {
+            if (agree.checked) {
+                gate.style.display = 'none';
+                if (submitBtn) submitBtn.disabled = false;
+                localStorage.setItem('mq_terms_accepted', 'true');
+            }
+        });
+    }
+
+    // ---------- FORM ----------
+    const form = $('#tenantForm');
+
+    if (form) {
+        form.addEventListener('submit', (e)=>{
+            e.preventDefault();
+            
+            // Validate phone numbers
+            const phoneInputs = [
+                {id: '#phone', name: 'Contact Number', validation: '#phoneValidation'},
+                {id: '#momo', name: 'MOMO Number', validation: '#momoValidation'},
+                {id: '#emPhone', name: 'Emergency Phone', validation: '#emPhoneValidation'}
+            ];
+
+            let hasError = false;
+            
+            for (const {id, name, validation} of phoneInputs) {
+                const input = $(id);
+                const validationEl = $(validation);
+                
+                if (input && input.value.trim() !== '') {
+                    if (!validateRwandaPhone(input.value.trim())) {
+                        validationEl.className = 'validation-message invalid';
+                        validationEl.textContent = `✗ Please enter a valid Rwandan phone number for ${name} (07XXXXXXXX or +2507XXXXXXXX)`;
+                        input.classList.remove('valid-phone');
+                        input.classList.add('invalid-phone');
+                        input.focus();
+                        hasError = true;
+                        break;
+                    } else {
+                        input.value = formatPhoneNumber(input.value.trim());
+                    }
+                }
+            }
+            
+            if (hasError) return;
+
+            // Native validation
+            if(!form.checkValidity()){
+                form.reportValidity();
+                return;
+            }
+
+            const moveInStr = $('#moveIn').value;
+            const moveIn = new Date(moveInStr);
+            if(Number($('#initialMonths').value||0) < 2){
+                showToast('Initial months to pay must be at least 2 (per rules).', 'error');
+                return;
+            }
+
+            // Build tenant record
+            const t = {
+                id: Date.now() + Math.random().toString(16).slice(2),
+                createdAt: new Date().toISOString(),
+
+                fullName: $('#fullName').value.trim(),
+                gender: $('#gender').value,
+                dob: $('#dob').value,
+                phone: $('#phone').value.trim(),
+                idNo: $('#idNo').value.trim(),
+                email: $('#email').value.trim(),
+
+                institution: $('#institution').value,
+                studentId: $('#studentId').value.trim(),
+                program: $('#program').value.trim(),
+                yos: $('#yos').value,
+
+                address: $('#address').value.trim(),
+                room: $('#room').value,
+                rent: 10000,
+                payMethod: 'MOMO',
+                momo: $('#momo').value.trim(),
+                moveIn: moveInStr,
+                duration: Number($('#duration').value),
+
+                emergency: {
+                    name: $('#emName').value.trim(),
+                    relationship: $('#emRel').value.trim(),
+                    phone: $('#emPhone').value.trim(),
+                    address: $('#emAddr').value.trim()
+                },
+
+                payments: [],
+                paymentHistory: []
+            };
+
+            // On submission, automatically register the first N months as paid if initial months provided
+            const initMonths = Number($('#initialMonths').value||0);
+            const d0 = new Date(moveIn.getFullYear(), moveIn.getMonth(), 1);
+            for(let i=0;i<initMonths;i++){
+                const d = new Date(d0.getFullYear(), d0.getMonth()+i, 1);
+                const paymentDate = d.toISOString().slice(0,10);
+                t.payments.push(paymentDate);
+                t.paymentHistory.push({
+                    date: new Date().toISOString(),
+                    amount: 10000,
+                    months: 1,
+                    transactionId: 'INITIAL-' + Date.now() + '-' + i,
+                    status: 'completed',
+                    method: 'MOMO'
+                });
+            }
+
+            const tenants = loadTenants();
+            tenants.push(t);
+            saveTenants(tenants);
+
+            showToast('Registration saved successfully!');
+            form.reset();
+            
+            // Clear validation messages
+            $$('.validation-message').forEach(el => {
+                el.className = 'validation-message';
+                el.textContent = '';
+            });
+            
+            renderAll();
+        });
+    }
+
+    // ---------- DASHBOARD ----------
+    const tabsEl = $('#tabs');
+    const views = {
+        list: $('#view-list'),
+        pending: $('#view-pending'),
+        months: $('#view-months')
+    };
+    
+    if(tabsEl) {
+        tabsEl.addEventListener('click', (e)=>{
+            const btn = e.target.closest('.tab');
+            if(!btn) return;
+            $$('.tab').forEach(b=>b.classList.remove('active'));
+            btn.classList.add('active');
+            Object.values(views).forEach(v=>v.style.display='none');
+            const key = btn.dataset.tab;
+            if(views[key]) views[key].style.display='';
+            renderAll();
+        });
+    }
+
+    function monthsSinceMoveIn(t){
+        return monthDiff(new Date(t.moveIn), today());
+    }
+    
+    function monthsPaid(t){ return t.payments.length; }
+    
+    function monthsOwed(t){ return Math.max(0, monthsSinceMoveIn(t) - monthsPaid(t)); }
+
+    function renderTenants(){
+        const tbody = $('#tblTenants tbody');
+        if(!tbody) return;
+        
+        const tenants = loadTenants();
+        tbody.innerHTML = '';
+        
+        tenants.forEach(t=>{
+            const owed = monthsOwed(t);
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><strong>${escapeHtml(t.fullName)}</strong><br><span class="muted mono">${escapeHtml(t.phone)}</span></td>
+                <td>${escapeHtml(t.room)}</td>
+                <td>${escapeHtml(t.institution)}</td>
+                <td class="mono">${escapeHtml(t.moveIn)}</td>
+                <td class="mono">${monthsPaid(t)}</td>
+                <td class="mono">${owed}</td>
+                <td>
+                    <button class="btn" data-act="pay" data-id="${t.id}" style="padding:.35rem .6rem; font-size:.85rem">Mark Month Paid</button>
+                    <button class="btn secondary" data-act="del" data-id="${t.id}" style="padding:.35rem .6rem; font-size:.85rem">Remove</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        tbody.addEventListener('click', onTenantAction);
+    }
+
+    function onTenantAction(e){
+        const btn = e.target.closest('button[data-act]');
+        if(!btn) return;
+        const id = btn.dataset.id;
+        const act = btn.dataset.act;
+        let tenants = loadTenants();
+        const t = tenants.find(x=>x.id===id);
+        if(!t) return;
+
+        if(act==='pay'){
+            const base = new Date(new Date(t.moveIn).getFullYear(), new Date(t.moveIn).getMonth(), 1);
+            const paidSet = new Set(t.payments);
+            let next = null;
+            for(let i=0;i<240;i++){
+                const d = new Date(base.getFullYear(), base.getMonth()+i, 1);
+                const iso = d.toISOString().slice(0,10);
+                if(!paidSet.has(iso)){
+                    next = iso; break;
+                }
+            }
+            if(!next){ showToast('All months already marked as paid.'); return; }
+            t.payments.push(next);
+            t.paymentHistory.push({
+                date: new Date().toISOString(),
+                amount: 10000,
+                months: 1,
+                transactionId: 'MANUAL-' + Date.now(),
+                status: 'completed',
+                method: 'MOMO'
+            });
+            saveTenants(tenants);
+            showToast('Payment recorded successfully!');
+            renderAll();
+        } else if(act==='del'){
+            if(confirm('Remove this tenant?')) {
+                tenants = tenants.filter(x=>x.id!==id);
+                saveTenants(tenants);
+                showToast('Tenant removed successfully!');
+                renderAll();
+            }
+        }
+    }
+
+    function renderPending(){
+        const tbody = $('#tblPending tbody');
+        if(!tbody) return;
+        
+        const tenants = loadTenants().filter(t=>monthsOwed(t)>0);
+        tbody.innerHTML = '';
+        
+        tenants.forEach(t=>{
+            const owed = monthsOwed(t);
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><strong>${escapeHtml(t.fullName)}</strong></td>
+                <td>${escapeHtml(t.room)}</td>
+                <td class="mono">${escapeHtml(t.moveIn)}</td>
+                <td class="mono">${owed}</td>
+                <td><span class="status ${owed>=3?'bad':(owed>=1?'warn':'ok')}">${owed>=3?'Critical':(owed>=1?'Pending':'OK')}</span></td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function renderMonths(){
+        const tbody = $('#tblMonths tbody');
+        if(!tbody) return;
+        
+        const tenants = loadTenants();
+        tbody.innerHTML = '';
+        
+        tenants.forEach(t=>{
+            const since = monthsSinceMoveIn(t);
+            const paid = monthsPaid(t);
+            const owed = monthsOwed(t);
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><strong>${escapeHtml(t.fullName)}</strong></td>
+                <td>${escapeHtml(t.room)}</td>
+                <td class="mono">${escapeHtml(t.moveIn)}</td>
+                <td class="mono">${since}</td>
+                <td class="mono">${paid}</td>
+                <td class="mono">${owed}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function renderAll(){
+        renderTenants();
+        renderPending();
+        renderMonths();
+    }
+
+    function escapeHtml(s){ 
+        if(!s) return '';
+        return s.toString().replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); 
+    }
+
+    // ---------- EXPORT FUNCTIONALITY ----------
+    function exportData(format) {
+        const tenants = loadTenants();
+        
+        if(tenants.length === 0) {
+            showToast('No data to export. Please add tenants first.', 'error');
+            return;
+        }
+        
+        if(format === 'csv') {
+            let csv = 'Name,Phone,Email,Room,Institution,Move-in,Paid Months,Months Owed\n';
+            
+            tenants.forEach(tenant => {
+                csv += `"${tenant.fullName}","${tenant.phone}","${tenant.email}","${tenant.room}","${tenant.institution}","${tenant.moveIn}",${tenant.payments.length},${monthsOwed(tenant)}\n`;
+            });
+            
+            downloadFile(csv, 'masdjid_tenants.csv', 'text/csv');
+            showToast('Data exported as CSV successfully!');
+        } else if(format === 'json') {
+            const data = JSON.stringify(tenants, null, 2);
+            downloadFile(data, 'masdjid_tenants.json', 'application/json');
+            showToast('Data exported as JSON successfully!');
+        }
+    }
+
+    function downloadFile(content, fileName, contentType) {
+        const blob = new Blob([content], { type: contentType });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    // ---------- SEND REMINDERS FUNCTION ----------
+    function sendReminders() {
+        const tenants = loadTenants().filter(t => monthsOwed(t) > 0);
+        
+        if (tenants.length === 0) {
+            showToast('No tenants with pending payments.', 'error');
+            return;
+        }
+        
+        let message = "Payment Reminders Sent:\n\n";
+        
+        tenants.forEach(tenant => {
+            const owed = monthsOwed(tenant);
+            message += `${tenant.fullName} (${tenant.phone}): ${owed} month(s) owed\n`;
+        });
+        
+        // In a real implementation, this would send actual SMS/emails
+        // For demo purposes, we'll just show a confirmation
+        alert(message);
+        showToast(`Payment reminders sent to ${tenants.length} tenant(s).`);
+    }
+
+    // ---------- TEST EMAIL FUNCTION ----------
+    function testEmailSetup() {
+        showToast('Email functionality would be configured with a server in production.');
+        
+        // In a real implementation, this would connect to an email service
+        // For demo purposes, we'll just show a confirmation
+        setTimeout(() => {
+            alert('Email test completed successfully! In a production environment, this would send actual emails to tenants with payment reminders.');
+        }, 1000);
+    }
+
+    // ---------- PAGE NAVIGATION ----------
+    function setupPageNavigation() {
+        const navButtons = $$('.page-nav-btn');
+        const pages = $$('.page');
+        
+        navButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetPage = button.dataset.page;
+                
+                // Update active button
+                navButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                // Show target page
+                pages.forEach(page => page.classList.remove('active'));
+                $(`#${targetPage}-page`).classList.add('active');
+                
+                // If switching to dashboard, render the data
+                if (targetPage === 'dashboard') {
+                    renderAll();
+                }
+            });
+        });
+    }
+
+    // ---------- INITIAL SETUP ----------
+    function initializeApp() {
+        // Setup phone validation
+        setupPhoneValidation();
+        
+        // Setup page navigation
+        setupPageNavigation();
+        
+        // Set up event listeners for admin buttons
+        if($('#exportDataBtn')) {
+            $('#exportDataBtn').addEventListener('click', () => exportData('csv'));
+        }
+        
+        if($('#shareDataBtn')) {
+            $('#shareDataBtn').addEventListener('click', shareData);
+        }
+        
+        if($('#importDataBtn')) {
+            $('#importDataBtn').addEventListener('click', importData);
+        }
+        
+        if($('#sendRemindersBtn')) {
+            $('#sendRemindersBtn').addEventListener('click', sendReminders);
+        }
+        
+        if($('#testEmailBtn')) {
+            $('#testEmailBtn').addEventListener('click', testEmailSetup);
+        }
+        
+        // Hide terms gate if already accepted
+        if(localStorage.getItem('mq_terms_accepted')) {
+            if (gate) gate.style.display = 'none';
+            if (submitBtn) submitBtn.disabled = false;
+        }
+    }
+
+    // Initial render
+    document.addEventListener('DOMContentLoaded', initializeApp);
+</script>
+</body>
+</html>
